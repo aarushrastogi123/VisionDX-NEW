@@ -1,6 +1,22 @@
-export default function Home() {
-  return (
-    <main className="min-h-screen bg-black/50 text-slate-900">
+import { cookies } from "next/headers";
+import { verifyToken } from "@/lib/auth";
+import Link from "next/link";
+import LogoutButton from "./components/LogoutButton";
+export default async function Home() {
+    const cookieStore = await cookies();
+
+    const token = cookieStore.get("visiondx_token")?.value;
+
+    let isLoggedIn = false;
+
+    if (token) {
+      const payload = await verifyToken(token);
+        if (payload?.userId) {
+          isLoggedIn = true;
+    }
+    }
+    return (
+      <main className="min-h-screen bg-black/50 text-slate-900">
       {/* ================= NAVBAR ================= */}
       <nav className="sticky top-0 z-50 border-b border-slate-200 bg-black/90 backdrop-blur shadow-lg shadow-slate-900">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
@@ -33,9 +49,27 @@ export default function Home() {
 
           {/* Auth */}
           <div className="flex items-center gap-3">
-            <button className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 hover:text-white">
-              Login
-            </button>
+            {isLoggedIn ? (
+              <>
+                <Link
+                  href="/profile"
+                  aria-label="Go to profile"
+                  title="My Profile"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/40 bg-slate-800 text-xl text-white transition hover:border-cyan-300 hover:bg-slate-700 hover:text-cyan-300"
+                >
+                  👤
+                </Link>
+
+                <LogoutButton />
+              </>
+            ) : (
+              <Link
+                href="/login"
+                className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </nav>
