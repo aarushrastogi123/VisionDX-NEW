@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 type User = {
-  name: string;
-  email: string;
+  name: string | null;
+  email: string | null;
   age: number | null;
   gender: string | null;
 };
@@ -20,7 +20,7 @@ export default function ProfileClient({
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const [name, setName] = useState(user.name);
+  const [name, setName] = useState(user.name || "");
   const [age, setAge] = useState(
     user.age !== null ? user.age.toString() : ""
   );
@@ -30,7 +30,7 @@ export default function ProfileClient({
   const [loading, setLoading] = useState(false);
 
   const handleCancel = () => {
-    setName(user.name);
+    setName(user.name || "");
     setAge(user.age !== null ? user.age.toString() : "");
     setGender(user.gender || "");
     setMessage("");
@@ -100,7 +100,7 @@ export default function ProfileClient({
           </p>
 
           <h1 className="mt-3 text-4xl font-bold text-white">
-            Welcome back, {user.name}
+            Welcome back, {user.name || "User"}
           </h1>
 
           <p className="mt-4 text-slate-400">
@@ -185,7 +185,7 @@ export default function ProfileClient({
 
                   <input
                     type="email"
-                    value={user.email}
+                    value={user.email || ""}
                     disabled
                     className="w-full cursor-not-allowed rounded-xl border border-slate-800 bg-black/20 px-4 py-3 text-slate-500"
                   />

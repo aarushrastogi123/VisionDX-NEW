@@ -21,12 +21,12 @@ model User {
 }
 
 model Prediction {
-  id               String   @id @default(cuid())
-  imageUrl         String
-  predictedDisease String
-  confidence       Float
-  createdAt        DateTime @default(now())
+  id         String   @id @default(cuid())
+  imageUrl   String
+  disease    String
+  confidence Float
+  createdAt  DateTime @default(now())
 
-  userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -1,3 +1,4 @@
+import ImageUpload from "./components/ImageUpload";
 import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 import Link from "next/link";
@@ -304,30 +305,8 @@ export default async function Home() {
           </p>
 
           {/* Upload box */}
-          <div className="mt-12 rounded-3xl border-2 border-dashed border-blue-200 bg-blue-50/50 p-12 transition hover:border-blue-400">
-            
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100 text-3xl">
-              👁️
-            </div>
+          <ImageUpload />
 
-            <h3 className="mt-6 text-xl font-semibold text-slate-900">
-              Upload retinal image
-            </h3>
-
-            <p className="mt-2 text-sm text-slate-500">
-              PNG, JPG or JPEG
-            </p>
-
-            <button className="mt-7 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700">
-              Choose Image
-            </button>
-          </div>
-
-          <p className="mt-6 text-xs leading-6 text-slate-400">
-            VisionDX provides AI-assisted predictions for educational and
-            research purposes and is not a replacement for professional medical
-            diagnosis.
-          </p>
         </div>
       </section>
 
