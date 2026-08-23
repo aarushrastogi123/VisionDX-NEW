@@ -1,19 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+
 type PredictionResult = {
   prediction: string;
   confidence: number;
   all_predictions: Record<string, number>;
 };
 
-export default function ImageUpload({
-  isLoggedIn,
-}: {
-  isLoggedIn: boolean;
-}){
-  const router = useRouter();
+export default function ImageUpload() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -57,29 +52,16 @@ export default function ImageUpload({
     setSelectedFile(file);
     setImageName(file.name);
 
-    // Revoke the previous blob URL to avoid memory leaks
-    if (selectedImage) {
-      URL.revokeObjectURL(selectedImage);
-    }
     const imageUrl = URL.createObjectURL(file);
 
     setSelectedImage(imageUrl);
   };
 
   const handleChooseImage = () => {
-  if (!isLoggedIn) {
-    router.push("/signup?next=/#diagnosis");
-    return;
-  }
-
-  fileInputRef.current?.click();
-};
+    fileInputRef.current?.click();
+  };
 
   const handleRemoveImage = () => {
-    // Revoke blob URL before clearing
-    if (selectedImage) {
-      URL.revokeObjectURL(selectedImage);
-    }
     setSelectedImage(null);
     setSelectedFile(null);
     setImageName("");
@@ -93,10 +75,6 @@ export default function ImageUpload({
   };
 
   const handleAnalyzeImage = async () => {
-    if (!isLoggedIn) {
-      router.push("/signup?next=/#diagnosis");
-      return;
-    }
     if (!selectedFile) {
       setAnalysisError(
         "Please select an image first."
@@ -117,11 +95,8 @@ export default function ImageUpload({
         selectedFile
       );
 
-      const ML_API_URL =
-        process.env.NEXT_PUBLIC_ML_API_URL ?? "http://127.0.0.1:8001";
-
       const response = await fetch(
-        `${ML_API_URL}/predict`,
+        "http://127.0.0.1:8001/predict",
         {
           method: "POST",
           body: formData,
@@ -247,13 +222,13 @@ export default function ImageUpload({
             {imageError}
           </p>
         )}
-      </div>
 
-      {analysisError && (
-        <p className="mt-5 text-sm font-medium text-red-500">
-          {analysisError}
-        </p>
-      )}
+        {analysisError && (
+          <p className="mt-5 text-sm font-medium text-red-500">
+            {analysisError}
+          </p>
+        )}
+      </div>
 
       {result && (
         <div className="mt-8 rounded-3xl border border-cyan-200 bg-white p-8 text-left shadow-xl">

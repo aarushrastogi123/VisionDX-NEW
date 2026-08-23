@@ -55,8 +55,6 @@ export default function SignupPage() {
         "Account created successfully! Redirecting to login..."
       );
 
-      setLoading(false);
-
       setTimeout(() => {
         router.push(
           `/login?next=${encodeURIComponent(nextUrl)}`

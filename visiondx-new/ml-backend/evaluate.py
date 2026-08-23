@@ -143,8 +143,7 @@ print("\nLoading trained model...")
 
 checkpoint = torch.load(
     MODEL_PATH,
-    map_location=device,
-    weights_only=False
+    map_location=device
 )
 
 
