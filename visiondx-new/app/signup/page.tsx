@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function SignupPage() {
+function SignupContent() {
   const router = useRouter();
-
   const searchParams = useSearchParams();
 
   const nextUrl = searchParams.get("next") || "/";
@@ -72,7 +71,6 @@ export default function SignupPage() {
 
       {/* Background glow */}
       <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
-
       <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl" />
 
       <div className="relative w-full max-w-md">
@@ -234,5 +232,17 @@ export default function SignupPage() {
 
       </div>
     </main>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black" />
+      }
+    >
+      <SignupContent />
+    </Suspense>
   );
 }

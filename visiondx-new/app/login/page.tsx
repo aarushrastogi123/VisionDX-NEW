@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-const nextUrl = searchParams.get("next") || "/";
+  const nextUrl = searchParams.get("next") || "/";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -47,7 +48,7 @@ const nextUrl = searchParams.get("next") || "/";
 
       setTimeout(() => {
         router.push(nextUrl);
-    }, 1000);
+      }, 1000);
     } catch {
       setMessage("Unable to connect to the server");
       setLoading(false);
@@ -56,12 +57,10 @@ const nextUrl = searchParams.get("next") || "/";
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-800 px-6 py-12">
-      {/* Background glow */}
       <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
       <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl" />
 
       <div className="relative w-full max-w-md">
-        {/* Logo */}
         <Link
           href="/"
           className="mb-10 block text-center text-4xl font-bold tracking-tight text-white"
@@ -69,7 +68,6 @@ const nextUrl = searchParams.get("next") || "/";
           Vision<span className="text-cyan-300">DX</span>
         </Link>
 
-        {/* Login Card */}
         <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl backdrop-blur sm:p-10">
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-cyan-300">
@@ -85,11 +83,7 @@ const nextUrl = searchParams.get("next") || "/";
             </p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="mt-8 space-y-5"
-          >
-            {/* Email */}
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Email address
@@ -105,7 +99,6 @@ const nextUrl = searchParams.get("next") || "/";
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Password
@@ -148,12 +141,24 @@ const nextUrl = searchParams.get("next") || "/";
         </div>
 
         <Link
-          href={nextUrl === "/" ? "/" : `/login?next=${encodeURIComponent(nextUrl)}`}
+          href={
+            nextUrl === "/"
+              ? "/"
+              : `/login?next=${encodeURIComponent(nextUrl)}`
+          }
           className="mt-6 block text-center text-sm text-slate-500 transition hover:text-cyan-300"
         >
           ← Back to VisionDX
         </Link>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
