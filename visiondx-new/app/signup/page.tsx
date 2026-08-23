@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function SignupPage() {
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const nextUrl = searchParams.get("next") || "/";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,9 +55,14 @@ export default function SignupPage() {
         "Account created successfully! Redirecting to login..."
       );
 
+      setLoading(false);
+
       setTimeout(() => {
-        router.push("/login");
+        router.push(
+          `/login?next=${encodeURIComponent(nextUrl)}`
+        );
       }, 1500);
+
     } catch {
       setMessage("Unable to connect to the server");
       setLoading(false);
@@ -62,11 +71,14 @@ export default function SignupPage() {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-800 px-6 py-12">
+
       {/* Background glow */}
       <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
+
       <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl" />
 
       <div className="relative w-full max-w-md">
+
         {/* Logo */}
         <Link
           href="/"
@@ -76,6 +88,7 @@ export default function SignupPage() {
         </Link>
 
         <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl backdrop-blur sm:p-10">
+
           <div className="text-center">
             <p className="text-sm font-semibold uppercase tracking-widest text-cyan-300">
               Get Started
@@ -94,6 +107,7 @@ export default function SignupPage() {
             onSubmit={handleSubmit}
             className="mt-8 space-y-5"
           >
+
             {/* Name */}
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
@@ -187,7 +201,9 @@ export default function SignupPage() {
               disabled={loading}
               className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white shadow-lg shadow-blue-950 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loading ? "Creating account..." : "Create Account"}
+              {loading
+                ? "Creating account..."
+                : "Create Account"}
             </button>
 
             {message && (
@@ -195,17 +211,20 @@ export default function SignupPage() {
                 {message}
               </p>
             )}
+
           </form>
 
           <p className="mt-7 text-center text-sm text-slate-400">
             Already have an account?{" "}
+
             <Link
-              href="/login"
+              href={`/login?next=${encodeURIComponent(nextUrl)}`}
               className="font-semibold text-cyan-300 transition hover:text-cyan-200"
             >
               Login
             </Link>
           </p>
+
         </div>
 
         <Link
@@ -214,6 +233,7 @@ export default function SignupPage() {
         >
           ← Back to VisionDX
         </Link>
+
       </div>
     </main>
   );

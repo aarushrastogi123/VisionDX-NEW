@@ -113,12 +113,12 @@ export default async function Home() {
       </p>
 
       <div className="mt-9 flex flex-wrap justify-center gap-4">
-        <a
-          href="#diagnosis"
+        <Link
+          href={isLoggedIn ? "#diagnosis" : "/signup?next=/#diagnosis"}
           className="rounded-lg bg-blue-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-blue-950 transition hover:bg-blue-700"
         >
           Start Your Diagnosis
-        </a>
+        </Link>
 
         <a
           href="#how-it-works"
@@ -145,7 +145,7 @@ export default async function Home() {
         </div>
 
         <div>
-          <p className="text-xl font-bold text-cyan-300">5 Classes</p>
+          <p className="text-xl font-bold text-cyan-300">7 Classes</p>
           <p className="mt-1 text-sm text-slate-100">
             Disease prediction
           </p>
@@ -305,7 +305,7 @@ export default async function Home() {
           </p>
 
           {/* Upload box */}
-          <ImageUpload />
+          <ImageUpload isLoggedIn={isLoggedIn} />
 
         </div>
       </section>

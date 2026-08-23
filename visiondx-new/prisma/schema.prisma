@@ -30,3 +30,11 @@ model Prediction {
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model PasswordResetOTP {
+  id        String   @id @default(cuid())
+  email     String
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

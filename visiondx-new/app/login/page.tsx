@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
+const nextUrl = searchParams.get("next") || "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -44,8 +46,8 @@ export default function LoginPage() {
       setMessage("Login successful! Redirecting...");
 
       setTimeout(() => {
-        router.push("/");
-      }, 1000);
+        router.push(nextUrl);
+    }, 1000);
     } catch {
       setMessage("Unable to connect to the server");
       setLoading(false);
@@ -137,7 +139,7 @@ export default function LoginPage() {
           <p className="mt-7 text-center text-sm text-slate-400">
             Don&apos;t have an account?{" "}
             <Link
-              href="/signup"
+              href={`/signup?next=${encodeURIComponent(nextUrl)}`}
               className="font-semibold text-cyan-300 transition hover:text-cyan-200"
             >
               Create one
@@ -146,7 +148,7 @@ export default function LoginPage() {
         </div>
 
         <Link
-          href="/"
+          href={nextUrl === "/" ? "/" : `/login?next=${encodeURIComponent(nextUrl)}`}
           className="mt-6 block text-center text-sm text-slate-500 transition hover:text-cyan-300"
         >
           ← Back to VisionDX
