@@ -1,7 +1,23 @@
 import ImageUpload from "./components/ImageUpload";
+import { cookies } from "next/headers";
+import { verifyToken } from "@/lib/auth";
 import Link from "next/link";
+import LogoutButton from "./components/LogoutButton";
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("visiondx_token")?.value;
+
+  let isLoggedIn = false;
+
+  if (token) {
+    const payload = await verifyToken(token);
+
+    if (payload?.userId) {
+      isLoggedIn = true;
+    }
+  }
   return (
     <main className="min-h-screen bg-black/50 text-slate-900">
 
@@ -48,14 +64,29 @@ export default function Home() {
           </div>
 
           {/* Auth */}
-          <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-            >
-              Login
-            </Link>
-          </div>
+<div className="flex items-center gap-3">
+  {isLoggedIn ? (
+    <>
+      <Link
+        href="/profile"
+        aria-label="Go to profile"
+        title="My Profile"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/40 bg-slate-800 text-xl text-white transition hover:border-cyan-300 hover:bg-slate-700 hover:text-cyan-300"
+      >
+        👤
+      </Link>
+
+      <LogoutButton />
+    </>
+  ) : (
+    <Link
+      href="/login"
+      className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+    >
+      Login
+    </Link>
+  )}
+</div>
 
         </div>
       </nav>

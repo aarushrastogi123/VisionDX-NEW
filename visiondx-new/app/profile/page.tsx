@@ -25,11 +25,25 @@ export default async function ProfilePage() {
     where: {
       id: userId,
     },
+
     select: {
       name: true,
       email: true,
       age: true,
       gender: true,
+
+      predictions: {
+        orderBy: {
+          createdAt: "desc",
+        },
+
+        select: {
+          id: true,
+          disease: true,
+          confidence: true,
+          createdAt: true,
+        },
+      },
     },
   });
 

@@ -5,21 +5,29 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
-    // 1. Check if the user is logged in
+    // ==========================================
+    // 1. CHECK USER LOGIN
+    // ==========================================
+
     const cookieStore = await cookies();
-    const token = cookieStore.get("visiondx_token")?.value;
+
+    const token =
+      cookieStore.get("visiondx_token")?.value;
 
     if (!token) {
       return NextResponse.json(
         {
           success: false,
-          message: "Please log in to make a prediction",
+          message: "Please log in to save a prediction",
         },
         { status: 401 }
       );
     }
 
-    // 2. Verify the JWT
+    // ==========================================
+    // 2. VERIFY JWT
+    // ==========================================
+
     const payload = await verifyToken(token);
 
     if (!payload || !payload.userId) {
@@ -34,13 +42,28 @@ export async function POST(request: Request) {
 
     const userId = payload.userId as string;
 
-    // 3. Get the uploaded data
+    // ==========================================
+    // 3. GET PREDICTION DATA
+    // ==========================================
+
     const body = await request.json();
 
-    const { imageUrl, disease, confidence } = body;
+    const {
+      imageUrl,
+      disease,
+      confidence,
+      predictions,
+    } = body;
 
-    // 4. Validate the data
-    if (!imageUrl || !disease || confidence === undefined) {
+    // ==========================================
+    // 4. VALIDATE DATA
+    // ==========================================
+
+    if (
+      !imageUrl ||
+      !disease ||
+      confidence === undefined
+    ) {
       return NextResponse.json(
         {
           success: false,
@@ -50,31 +73,85 @@ export async function POST(request: Request) {
       );
     }
 
-    // 5. Save prediction in PostgreSQL
-    const prediction = await prisma.prediction.create({
-      data: {
-        imageUrl,
-        disease,
-        confidence: Number(confidence),
-        userId,
-      },
-    });
+    // ==========================================
+    // 5. SAVE NEW PREDICTION
+    // ==========================================
 
-    // 6. Return the saved prediction
+    const prediction =
+      await prisma.prediction.create({
+        data: {
+          imageUrl,
+          disease,
+          confidence: Number(confidence),
+          predictions: predictions ?? null,
+          userId,
+        },
+      });
+
+    // ==========================================
+    // 6. GET ALL USER PREDICTIONS
+    // NEWEST FIRST
+    // ==========================================
+
+    const userPredictions =
+      await prisma.prediction.findMany({
+        where: {
+          userId,
+        },
+
+        orderBy: {
+          createdAt: "desc",
+        },
+
+        select: {
+          id: true,
+        },
+      });
+
+    // ==========================================
+    // 7. DELETE EVERYTHING AFTER THE LATEST 5
+    // ==========================================
+
+    if (userPredictions.length > 5) {
+      const predictionsToDelete =
+        userPredictions.slice(5);
+
+      await prisma.prediction.deleteMany({
+        where: {
+          id: {
+            in: predictionsToDelete.map(
+              (prediction) => prediction.id
+            ),
+          },
+        },
+      });
+    }
+
+    // ==========================================
+    // 8. RETURN RESULT
+    // ==========================================
+
     return NextResponse.json({
       success: true,
       message: "Prediction saved successfully",
       prediction,
     });
+
   } catch (error) {
-    console.error("Prediction error:", error);
+    console.error(
+      "Prediction save error:",
+      error
+    );
 
     return NextResponse.json(
       {
         success: false,
-        message: "Something went wrong while saving prediction",
+        message:
+          "Something went wrong while saving prediction",
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }

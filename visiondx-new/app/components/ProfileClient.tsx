@@ -4,11 +4,19 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+type Prediction = {
+  id: string;
+  disease: string;
+  confidence: number;
+  createdAt: Date;
+};
+
 type User = {
   name: string | null;
   email: string | null;
   age: number | null;
   gender: string | null;
+  predictions: Prediction[];
 };
 
 export default function ProfileClient({
@@ -110,7 +118,7 @@ export default function ProfileClient({
         </div>
 
         {/* Profile information */}
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 space-y-10">
           {/* Personal Information */}
           <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-xl">
             <div className="flex items-center justify-between">
@@ -259,34 +267,99 @@ export default function ProfileClient({
             )}
           </div>
 
-          {/* Prediction history */}
-          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-xl">
-            <h2 className="text-xl font-semibold text-white">
-              Prediction History
-            </h2>
+          {/* Prediction History */}
 
-            <p className="mt-4 leading-7 text-slate-400">
-              Your previous retinal image predictions will appear here.
-            </p>
+<div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-xl">
+  <h2 className="text-xl font-semibold text-white">
+    Prediction History
+  </h2>
 
-            <div className="mt-8 rounded-2xl border border-dashed border-slate-700 p-8 text-center">
-              <p className="text-4xl">👁️</p>
+  <p className="mt-4 leading-7 text-slate-400">
+    Your previous retinal image analysis results.
+  </p>
 
-              <p className="mt-4 font-medium text-white">
-                No predictions yet
+  {user.predictions.length === 0 ? (
+
+    <div className="mt-8 rounded-2xl border border-dashed border-slate-700 p-8 text-center">
+
+      <p className="text-4xl">👁️</p>
+
+      <p className="mt-4 font-medium text-white">
+        No predictions yet
+      </p>
+
+      <p className="mt-2 text-sm text-slate-500">
+        Upload a retinal image to get started.
+      </p>
+
+      <Link
+        href="/#diagnosis"
+        className="mt-6 inline-block rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
+      >
+        Start Analysis
+      </Link>
+
+    </div>
+
+  ) : (
+
+    <div className="mt-6 space-y-4">
+
+      {user.predictions.map((prediction) => (
+
+        <div
+          key={prediction.id}
+          className="rounded-2xl border border-slate-700 bg-black/30 p-5 transition hover:border-cyan-300/40"
+        >
+
+          <div className="flex items-start justify-between gap-4">
+
+            <div>
+
+              <p className="text-xs font-semibold uppercase tracking-wider text-cyan-300">
+                AI Prediction
               </p>
+
+              <h3 className="mt-2 text-lg font-semibold text-white">
+
+                {prediction.disease.replaceAll("_", " ")}
+
+              </h3>
 
               <p className="mt-2 text-sm text-slate-500">
-                Upload a retinal image to get started.
+
+                {new Date(
+                  prediction.createdAt
+                ).toLocaleString()}
+
               </p>
 
-              <Link
-                href="/#diagnosis"
-                className="mt-6 inline-block rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
-              >
-                Start Analysis
-              </Link>
             </div>
+
+
+            <div className="text-right">
+
+              <p className="text-xs text-slate-500">
+                Confidence
+              </p>
+
+              <p className="mt-1 text-xl font-bold text-green-400">
+
+                {prediction.confidence.toFixed(2)}%
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      ))}
+
+    </div>
+
+            )}
           </div>
         </div>
       </div>

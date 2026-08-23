@@ -34,8 +34,16 @@ venv/
 __pycache__/
 *.pyc
 
-dataset/
+# Dataset - not needed for deployment
+/dataset/
+
+# Ignore all model files except production model
 *.pth
+!ml-backend/models/visiondx_resnet50_best.pth
+
+# Environment variables
+.env
+.env.local
 
 # vercel
 .vercel
