@@ -26,7 +26,7 @@ export default async function Home() {
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <Link href="http://localhost:3000/" className="text-3xl font-bold tracking-tight text-white">
+            <Link href="https://visiondx.vercel.app/" className="text-3xl font-bold tracking-tight text-white">
               Vision<span className="text-cyan-300">DX</span>
             </Link>
           </div>
