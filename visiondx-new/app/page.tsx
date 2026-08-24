@@ -3,7 +3,6 @@ import { cookies } from "next/headers";
 import { verifyToken } from "@/lib/auth";
 import Link from "next/link";
 import LogoutButton from "./components/LogoutButton";
-
 export default async function Home() {
   const cookieStore = await cookies();
 
@@ -64,30 +63,28 @@ export default async function Home() {
           </div>
 
           {/* Auth */}
-<div className="flex items-center gap-3">
-  {isLoggedIn ? (
-    <>
-      <Link
-        href="/profile"
-        aria-label="Go to profile"
-        title="My Profile"
-        className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/40 bg-slate-800 text-xl text-white transition hover:border-cyan-300 hover:bg-slate-700 hover:text-cyan-300"
-      >
-        👤
-      </Link>
-
-      <LogoutButton />
-    </>
-  ) : (
-    <Link
-      href="/login"
-      className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
-    >
-      Login
-    </Link>
-  )}
-</div>
-
+          <div className="flex items-center gap-3">
+            {isLoggedIn ? (
+              <>
+                <Link
+                  href="/profile"
+                  aria-label="Go to profile"
+                  title="My Profile"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/40 bg-slate-800 text-xl text-white transition hover:border-cyan-300 hover:bg-slate-700 hover:text-cyan-300"
+                >
+                  👤
+                </Link>
+                <LogoutButton />
+              </>
+              ) : (
+              <Link
+                href="/login"
+                className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+              >
+                Login
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -97,10 +94,8 @@ export default async function Home() {
         className="relative overflow-hidden bg-gradient-to-b from-black via-slate-900 to-slate-800"
       >
         {/* Background decoration */}
-        <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl" />
-
-        <div className="absolute right-0 top-40 h-96 w-96 rounded-full bg-cyan-100/40 blur-3xl" />
-
+        <div className="absolute -left-32 -top-32 h-[28rem] w-[28rem] animate-[float_5s_ease-in-out_infinite] rounded-full bg-blue-500/20 blur-3xl" />
+        <div className="absolute -right-32 top-1/3 h-[30rem] w-[30rem] animate-[float_4s_ease-in-out_infinite] rounded-full bg-cyan-400/15 blur-3xl" />
         <div className="relative mx-auto flex min-h-[80vh] max-w-7xl items-center justify-center px-6 py-12 lg:px-8">
 
           {/* Hero Text */}
