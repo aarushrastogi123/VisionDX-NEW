@@ -27,7 +27,7 @@ export default async function Home() {
 
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <Link href="https://visiondx.vercel.app" className="text-3xl font-bold tracking-tight text-white">
+            <Link href="http://localhost:3000/" className="text-3xl font-bold tracking-tight text-white">
               Vision<span className="text-cyan-300">DX</span>
             </Link>
           </div>
@@ -93,15 +93,15 @@ export default async function Home() {
 
       {/* ================= HERO ================= */}
       <section
-        id="home"
-        className="relative overflow-hidden bg-gradient-to-b from-black to-slate-800"
+        id="home" 
+        className="relative overflow-hidden bg-gradient-to-b from-black via-slate-900 to-slate-800"
       >
         {/* Background decoration */}
         <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl" />
 
         <div className="absolute right-0 top-40 h-96 w-96 rounded-full bg-cyan-100/40 blur-3xl" />
 
-        <div className="relative mx-auto flex min-h-[80vh] max-w-7xl items-center justify-center px-6 py-20 lg:px-8">
+        <div className="relative mx-auto flex min-h-[80vh] max-w-7xl items-center justify-center px-6 py-12 lg:px-8">
 
           {/* Hero Text */}
           <div className="flex max-w-3xl flex-col items-center text-center">
@@ -148,7 +148,7 @@ export default async function Home() {
             </div>
 
             {/* Small stats */}
-            <div className="mt-12 flex w-full flex-wrap justify-center gap-8 border-t border-slate-200 pt-8">
+            <div className="mt-12 flex w-full flex-wrap justify-center gap-8 border-t border-slate-200 pt-6">
 
               <div>
                 <p className="text-xl font-bold text-cyan-300">
@@ -179,20 +179,75 @@ export default async function Home() {
                   Disease prediction
                 </p>
               </div>
-
             </div>
 
-          </div>
+            {/* ================= DISEASE CLASSES TICKER ================= */}
+            <div className="mt-16 w-screen overflow-hidden border-y-4 border-cyan-300/20 py-5">
+              <div className="flex w-max animate-[marquee_25s_linear_infinite] items-center whitespace-nowrap text-lg font-semibold text-white">
 
+                <span className="mx-6">Normal</span>
+                <span className="text-slate-400">•</span>
+
+                <span className="mx-6">Diabetic Retinopathy</span>
+                <span className="text-slate-400">•</span>
+
+                <span className="mx-6">Glaucoma</span>
+                <span className="text-slate-400">•</span>
+
+                <span className="mx-6">Cataract</span>
+                <span className="text-slate-400">•</span>
+
+                <span className="mx-6">AMD</span>
+                <span className="text-slate-400">•</span>
+
+                <span className="mx-6">Hypertensive Retinopathy</span>
+                <span className="text-slate-400">•</span>
+
+                <span className="mx-6">Myopia</span>
+                <span className="text-slate-400">•</span>
+                {/* Duplicate for seamless loop */}
+                <span className="mx-6">Normal</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Diabetic Retinopathy</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Glaucoma</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Cataract</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">AMD</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Hypertensive Retinopathy</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Myopia</span>
+                <span className="text-slate-400">•</span>
+                {/* Duplicate for seamless loop */}
+                <span className="mx-6">Normal</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Diabetic Retinopathy</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Glaucoma</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Cataract</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">AMD</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Hypertensive Retinopathy</span>
+                <span className="text-slate-400">•</span>
+                <span className="mx-6">Myopia</span>
+                <span className="text-slate-400">•</span>
+
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ================= WHY CHOOSE VISIONDX ================= */}
       <section
         id="why"
-        className="bg-gradient-to-b from-slate-800 to-slate-700 py-24"
+        className="bg-gradient-to-b from-slate-800 to-slate-700 py-5"
       >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-8 lg:px-8">
 
           <div className="mx-auto max-w-2xl text-center">
 
@@ -351,7 +406,7 @@ export default async function Home() {
       >
         <div className="mx-auto max-w-3xl px-6 text-center">
 
-          <p className="text-sm font-semibold uppercase tracking-widest text-cyan-300 [text-shadow:0px_0px_20px_rgba(0,274,255,1)]">
+          <p className="text-sm font-semibold uppercase tracking-widest text-black [text-shadow:0px_0px_30px_rgba(0,0,0,1)]">
             AI Diagnosis
           </p>
 
