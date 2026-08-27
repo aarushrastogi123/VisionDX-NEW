@@ -385,7 +385,7 @@ VISIONDX-NEW/
     └── README.md
 🚀 Running VisionDX Locally
 1. Clone the repository
-git clone <YOUR_REPOSITORY_URL>
+git clone <https://github.com/aarushrastogi123/VisionDX-NEW>
 cd visiondx-new
 🌐 Run the Next.js Frontend
 Install dependencies:
