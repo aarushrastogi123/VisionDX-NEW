@@ -1,42 +1,54 @@
 # 👁️ VisionDX
 
-> AI-powered retinal fundus image analysis using Deep Learning, PyTorch, ResNet50, FastAPI, Next.js, and PostgreSQL.
+> AI-powered retinal fundus image analysis platform built with Next.js, PyTorch, ResNet50, FastAPI, Prisma, and PostgreSQL.
 
-![VisionDX Banner](https://img.shields.io/badge/AI-Powered-cyan)
-![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-red)
-![Next.js](https://img.shields.io/badge/Next.js-Full%20Stack-black)
-![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-TypeScript-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-ee4c2c?logo=pytorch)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169e1?logo=postgresql)](https://www.postgresql.org/)
+
+---
+
+## 🌐 Live Demo
+
+**Frontend:** https://visiondx.vercel.app/
+
+> The Next.js frontend is deployed on Vercel.
+>
+> The ML inference backend currently runs locally because GPU-based cloud deployment is not part of the current production deployment.
 
 ---
 
 # 🧠 About VisionDX
 
-VisionDX is an AI-powered retinal image analysis platform designed to assist in the classification of retinal fundus images.
+VisionDX is an AI-powered retinal fundus image analysis platform designed to assist with the classification of retinal images.
 
-Users can upload a retinal fundus image and receive a prediction generated using a deep learning model based on **ResNet50**.
+Users can upload a retinal fundus image and receive an AI-generated prediction from a trained **ResNet50 deep learning model**.
 
-The project combines:
+The platform combines a modern web application with a dedicated machine learning backend and database system.
 
-- 🧠 Deep Learning
-- 👁️ Computer Vision
-- ⚡ FastAPI
-- 🌐 Next.js
-- 🗄️ PostgreSQL
-- 🔐 User Authentication
-- 📊 Prediction History
+### Core capabilities
 
-VisionDX is designed as a full-stack AI application where users can interact with a trained deep learning model through a modern web interface.
+- 👁️ Retinal fundus image analysis
+- 🧠 ResNet50 deep learning classification
+- 📊 Confidence score and class probability breakdown
+- 🔐 User authentication
+- 👤 User profiles
+- 📁 Prediction history
+- 🗄️ PostgreSQL database
+- ⚡ FastAPI ML inference API
+- 🌐 Next.js frontend
 
 ---
 
 # ✨ Features
 
-## 🤖 AI-Powered Retinal Analysis
+## 🤖 AI Retinal Image Analysis
 
-Upload a retinal fundus image and receive an AI-generated prediction.
+Users can upload a retinal fundus image and receive an AI-generated classification.
 
-The deep learning model classifies images into the following **7 classes**:
+VisionDX currently supports **7 retinal image classes**:
 
 | Class | Description |
 |---|---|
@@ -44,423 +56,205 @@ The deep learning model classifies images into the following **7 classes**:
 | Cataract | Cataract |
 | DR | Diabetic Retinopathy |
 | Glaucoma | Glaucoma |
-| Hypertensive Retinopathy | Retinal damage related to hypertension |
-| Normal Fundus | Healthy retinal image |
+| Hypertensive Retinopathy | Retinal changes associated with hypertension |
+| Normal Fundus | Normal retinal fundus |
 | Pathological Myopia | Pathological Myopia |
 
 ---
 
-## 🔐 Authentication System
+## 📊 Prediction Results
 
-VisionDX includes user authentication functionality.
+After analysis, the application displays:
 
-Users can:
+- Predicted disease/class
+- Prediction confidence
+- Probability for each class
+- Visual probability breakdown
 
-- Create an account
-- Log in securely
-- Log out
-- Access their profile
-- View their prediction history
-
-Authentication is handled using secure tokens stored in cookies.
-
----
-
-## 📁 Image Upload
-
-Users can upload retinal fundus images in supported formats:
-
-- PNG
-- JPG
-- JPEG
-
-The uploaded image is sent to the backend for preprocessing and AI inference.
-
----
-
-## 🧠 Deep Learning Model
-
-The AI model is built using **PyTorch** and **TorchVision**.
-
-### Architecture
+Example:
 
 ```text
-Input Retinal Image
-        ↓
+Prediction: Glaucoma
+
+Confidence: 94.32%
+
+Prediction Breakdown
+Glaucoma                  94.32%
+AMD                        1.24%
+DR                         1.15%
+Hypertensive Retinopathy   0.91%
+Normal Fundus              0.67%
+Pathological Myopia        1.23%
+Cataract                   0.48%
+🔐 Authentication
+VisionDX includes a user authentication system.
+Users can:
+Create an account
+Log in
+Log out
+Access their profile
+Save predictions
+View previous predictions
+Authentication uses token-based sessions stored through HTTP cookies.
+📁 Prediction History
+When a logged-in user saves a prediction, the result is stored in PostgreSQL.
+The system stores information including:
+Prediction ID
+Retinal image reference
+Predicted disease
+Confidence score
+Prediction probabilities
+Creation timestamp
+Associated user
+VisionDX currently keeps the 5 most recent predictions per user.
+🧠 Deep Learning Model
+VisionDX uses a ResNet50 architecture implemented with PyTorch and TorchVision.
+The model was adapted for classification across seven retinal image classes.
+Model architecture
+Retinal Fundus Image
+        │
+        ▼
 Image Preprocessing
-        ↓
+        │
+        ▼
 ResNet50
-        ↓
+        │
+        ▼
 Feature Extraction
-        ↓
-Dropout Layer
-        ↓
+        │
+        ▼
+Dropout (0.3)
+        │
+        ▼
 Fully Connected Layer
-        ↓
-7 Disease Classes
-
-The final classification layer was modified for VisionDX.
-
-Original ResNet50 Output → 1000 Classes
-
-VisionDX ResNet50 Output → 7 Classes
-🧬 Model Architecture
-
-The model uses a pretrained ResNet50 architecture.
-
-Transfer learning is used to leverage features learned from large-scale image datasets.
-
-The final layer is modified as follows:
-
+        │
+        ▼
+7-Class Classification
+        │
+        ▼
+Softmax Probabilities
+        │
+        ▼
+Prediction + Confidence
+The final classification layer is:
 model.fc = nn.Sequential(
     nn.Dropout(0.3),
-    nn.Linear(2048, 7)
+    nn.Linear(model.fc.in_features, 7)
 )
-
-The model predicts probabilities for the following classes:
-
-0 → AMD
-1 → Cataract
-2 → DR
-3 → Glaucoma
-4 → Hypertensive_Retinopathy
-5 → Normal_Fundus
-6 → Pathological_Myopia
-📊 Dataset
-
-The VisionDX model is trained on a retinal fundus image dataset containing 7 different classes.
-
-The original dataset structure contains:
-
-Retinal Fundus Images/
-│
-├── train/
-│   ├── AMD/
-│   ├── Cataract/
-│   ├── DR/
-│   ├── Glaucoma/
-│   ├── Hypertensive_Retinopathy/
-│   ├── Normal_Fundus/
-│   └── Pathological_Myopia/
-│
-├── val/
-│
-└── test/
-Original Dataset Distribution
-Training Dataset
-Class	Images
-AMD	7,284
-Cataract	6,845
-DR	7,912
-Glaucoma	8,390
-Hypertensive Retinopathy	6,100
-Normal Fundus	13,205
-Pathological Myopia	5,710
-Total Training Images
-55,446 images
-Original Validation Dataset
-433 images
-Original Test Dataset
-1,236 images
-🔄 Dataset Split Used for Training
-
-For the VisionDX training pipeline, the training dataset was split into:
-
-Training Images:   49,901
-Validation Images: 5,545
-
-The validation data is used to monitor the model's ability to generalize to unseen images.
-
-📈 Training Results
-
-The model was trained using an NVIDIA RTX 3050 Ti Laptop GPU with CUDA acceleration.
-
-Hardware
-GPU: NVIDIA GeForce RTX 3050 Ti Laptop GPU
-CUDA: Enabled
-PyTorch: CUDA Version
-Training Metrics
-Epoch 1
-Train Loss:        0.2854
-Train Accuracy:    90.12%
-
-Validation Loss:   0.4292
-Validation Accuracy: 90.07%
-
-✅ Best model saved.
-
-Epoch 2
-Train Loss:        0.0975
-Train Accuracy:    96.37%
-
-Validation Loss:   0.4551
-Validation Accuracy: 89.84%
-Epoch 3
-Train Loss:        0.0709
-Train Accuracy:    97.13%
-
-Validation Loss:   0.5210
-Validation Accuracy: 90.30%
-
-✅ Best model saved.
-
-Epoch 4
-Train Loss:        0.0600
-Train Accuracy:    97.43%
-
-Validation Loss:   0.6945
-Validation Accuracy: 91.45%
-
-🏆 Best validation accuracy achieved so far.
-
-Epoch 5
-Train Loss:        0.0524
-Train Accuracy:    97.72%
-
-Validation Loss:   0.6544
-Validation Accuracy: 90.99%
-Current Best Result
-Best Validation Accuracy: 91.45%
-
-The model checkpoint is automatically saved whenever validation accuracy improves.
-
-⚠️ Training Observations
-
-The training accuracy increased rapidly:
-
-Epoch 1 → 90.12%
-Epoch 2 → 96.37%
-Epoch 3 → 97.13%
-Epoch 4 → 97.43%
-Epoch 5 → 97.72%
-
-However, validation loss increased during later epochs.
-
-This may indicate the beginning of overfitting, where the model becomes increasingly specialized to the training dataset.
-
-To address this, VisionDX uses techniques such as:
-
-Transfer Learning
-Dropout
-Data Augmentation
-Validation Monitoring
-Best Model Checkpointing
-
-Future improvements may include:
-
-Early Stopping
-Learning Rate Scheduling
-Additional Data Augmentation
-Class Balancing
-Hyperparameter Tuning
-🏗️ Project Architecture
-                    ┌──────────────────────┐
-                    │      User Browser    │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │       Next.js        │
-                    │      Frontend        │
-                    └──────────┬───────────┘
-                               │
-                        Upload Image
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │       FastAPI        │
-                    │       Backend        │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Image Preprocessing  │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │    ResNet50 Model    │
-                    │   PyTorch + CUDA     │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Disease Prediction   │
-                    │ + Confidence Score   │
-                    └──────────┬───────────┘
-                               │
-                               ▼
-                    ┌──────────────────────┐
-                    │ Prediction History   │
-                    │     PostgreSQL       │
-                    └──────────────────────┘
-🛠️ Technology Stack
-Frontend
-Next.js
-React
-TypeScript
-Tailwind CSS
-Backend
-Python
-FastAPI
-Uvicorn
-Artificial Intelligence
+📈 Model Performance
+The trained model was evaluated on 1,236 test images.
+Metric
+Result
+Test Accuracy
+96.93%
+Weighted F1-Score
+96.94%
+Best Validation Accuracy
+91.45%
+Test Images
+1,236
+Training Images
+55,446
+Number of Classes
+7
+Training progression
+Epoch
+Train Accuracy
+Validation Accuracy
+1
+90.12%
+90.07%
+2
+96.37%
+89.84%
+3
+97.13%
+90.30%
+4
+97.43%
+91.45%
+5
+97.72%
+90.99%
+The best checkpoint was selected based on validation accuracy.
+The difference between training and validation performance was monitored to identify potential overfitting.
+📚 Dataset
+The model was trained using a retinal fundus image dataset containing 55,446 training images across seven classes.
+Training distribution
+Class
+Images
+AMD
+7,284
+Cataract
+6,845
+DR
+7,912
+Glaucoma
+8,390
+Hypertensive Retinopathy
+6,100
+Normal Fundus
+13,205
+Pathological Myopia
+5,710
+Total
+55,446
+Additional evaluation data:
+Validation images: 1,236
+Test images: 1,236
+The dataset itself is not included in this repository because of its size and dataset distribution considerations.
+🔄 Training Pipeline
+The training pipeline performs:
+Dataset
+   ↓
+Image Loading
+   ↓
+Image Augmentation / Transformation
+   ↓
+ResNet50 Transfer Learning
+   ↓
+Training
+   ↓
+Validation
+   ↓
+Checkpoint Selection
+   ↓
+Best Model
+   ↓
+Evaluation
+The model was trained using:
 PyTorch
 TorchVision
-ResNet50
-CUDA
-Database
-PostgreSQL
-Prisma ORM
-Authentication
-Token-based authentication
-HTTP Cookies
-Secure user sessions
-📂 Project Structure
-VISIONDX-NEW/
-│
-└── visiondx-new/
-    │
-    ├── app/
-    │   │
-    │   ├── components/
-    │   │   └── LogoutButton.tsx
-    │   │
-    │   ├── login/
-    │   ├── profile/
-    │   ├── register/
-    │   │
-    │   ├── page.tsx
-    │   └── layout.tsx
-    │
-    ├── lib/
-    │   ├── auth.ts
-    │   └── ...
-    │
-    ├── prisma/
-    │   └── schema.prisma
-    │
-    ├── public/
-    │
-    ├── ml-backend/
-    │   │
-    │   ├── train.py
-    │   ├── requirements.txt
-    │   │
-    │   ├── models/
-    │   │   └── visiondx_model.pth
-    │   │
-    │   └── ...
-    │
-    ├── package.json
-    ├── next.config.ts
-    └── README.md
-
-The retinal image dataset is intentionally excluded from GitHub because of its large size.
-
-🚀 Running the Frontend
-
-Navigate to the Next.js project:
-
-cd visiondx-new
-
-Install dependencies:
-
-npm install
-
-Start the development server:
-
-npm run dev
-
-Open:
-
-http://localhost:3000
-🧠 Training the AI Model
-
-Navigate to the ML backend:
-
-cd ml-backend
-
-Activate the virtual environment.
-
-Windows
-venv\Scripts\activate
-
-Run the training script:
-
-python train.py
-
-The training pipeline will:
-
-Load retinal fundus images.
-Apply image transformations.
-Load pretrained ResNet50.
-Modify the classification layer for 7 classes.
-Train using CUDA if available.
-Validate after every epoch.
-Save the best-performing model.
-🖥️ GPU Training
-
-VisionDX supports CUDA acceleration.
-
-The training environment used:
-
-GPU:
+CUDA acceleration
 NVIDIA GeForce RTX 3050 Ti Laptop GPU
-
-CUDA:
-Enabled
-
-PyTorch:
-CUDA Build
-
-GPU availability can be checked using:
-
-import torch
-
-print(torch.cuda.is_available())
-
-if torch.cuda.is_available():
-    print(torch.cuda.get_device_name(0))
-📤 Prediction Flow
-User selects retinal image
-        ↓
-Frontend sends image
-        ↓
-FastAPI receives image
-        ↓
-Image is converted to RGB
-        ↓
-Image is resized
-        ↓
-Image is normalized
-        ↓
-Tensor is created
-        ↓
-ResNet50 performs inference
-        ↓
-Softmax probabilities calculated
-        ↓
-Highest probability selected
-        ↓
-Prediction returned to frontend
-        ↓
-Result displayed to user
-🧪 Example Prediction Response
-
-The backend can return data in the following format:
-
-{
-  "prediction": "Glaucoma",
-  "confidence": 94.32
-}
-
-Future versions can also return probabilities for all classes:
-
+The trained model checkpoint is stored at:
+ml-backend/models/visiondx_resnet50_best.pth
+⚡ ML Backend
+The machine learning inference service is implemented using FastAPI.
+API endpoints
+GET  /
+GET  /health
+POST /predict
+Prediction endpoint
+POST /predict
+The endpoint accepts a retinal image using multipart form data:
+file: <retinal image>
+The backend:
+Validates the image type
+Reads the uploaded image
+Converts it to RGB
+Resizes it to 224 × 224
+Applies ImageNet normalization
+Converts the image into a PyTorch tensor
+Runs ResNet50 inference
+Calculates Softmax probabilities
+Returns the predicted class and confidence
+📤 Prediction Response
+The current FastAPI backend returns:
 {
   "prediction": "Glaucoma",
   "confidence": 94.32,
-  "probabilities": {
+  "all_predictions": {
     "AMD": 1.24,
     "Cataract": 0.48,
     "DR": 1.15,
@@ -470,75 +264,312 @@ Future versions can also return probabilities for all classes:
     "Pathological_Myopia": 1.23
   }
 }
-🔮 Future Improvements
-
-VisionDX is currently under development.
-
-Planned improvements include:
-
- Complete FastAPI prediction API
- Connect Next.js frontend to AI backend
- Real-time image prediction
- Display confidence scores
- Display probabilities for all disease classes
- Save prediction history
- Improve profile dashboard
- Add prediction analytics
- Add confusion matrix visualization
- Add classification report
- Implement Early Stopping
- Implement Learning Rate Scheduler
- Improve model generalization
- Add Docker support
- Deploy frontend
- Deploy AI backend
-⚠️ Medical Disclaimer
-
-VisionDX is an experimental AI-based retinal image classification project developed for educational and research purposes.
-
-The predictions generated by this system:
-
-Are not medical diagnoses.
-Should not replace professional medical advice.
-Should not be used as the sole basis for treatment decisions.
-
-Always consult a qualified healthcare professional for medical diagnosis and treatment.
-
-📊 Current Project Status
-Frontend UI             ██████████  100%
-Authentication          █████████░  90%
-Database Integration    ████████░░  80%
-Dataset Preparation     ██████████  100%
-Model Training          █████████░  In Progress
-AI Prediction API       ████░░░░░░  Planned
-Frontend ↔ AI Backend   ░░░░░░░░░░  Planned
-Deployment              ░░░░░░░░░░  Planned
-🎯 Vision
-
-The goal of VisionDX is to demonstrate how modern web technologies and deep learning can be combined to build an end-to-end AI-powered application.
-
-The project brings together:
-
-Artificial Intelligence
-        +
-Computer Vision
-        +
-Backend Development
-        +
-Frontend Development
-        +
-Database Systems
-        +
+🏗️ System Architecture
+                         ┌─────────────────────┐
+                         │     User Browser     │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │      Next.js        │
+                         │     Frontend        │
+                         └──────────┬──────────┘
+                                    │
+                             Upload Image
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │      FastAPI        │
+                         │    ML Backend       │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │ Image Preprocessing │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │      ResNet50       │
+                         │      PyTorch        │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │ Prediction +        │
+                         │ Confidence Scores   │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │   Next.js Result    │
+                         └─────────────────────┘
+                                    │
+                                    ▼
+                         ┌─────────────────────┐
+                         │     PostgreSQL      │
+                         │ Prediction History  │
+                         └─────────────────────┘
+🛠️ Technology Stack
+Frontend
+Next.js 16
+React
+TypeScript
+Tailwind CSS
+Machine Learning
+Python
+PyTorch
+TorchVision
+ResNet50
+CUDA
+NumPy
+Pillow
+ML API
+FastAPI
+Uvicorn
+Python Multipart
+Database
+PostgreSQL
+Prisma ORM
 Authentication
-        =
-VisionDX
+JWT/token-based authentication
+HTTP cookies
+Development & Version Control
+Git
+GitHub
+📂 Project Structure
+VISIONDX-NEW/
+│
+└── visiondx-new/
+    │
+    ├── app/
+    │   ├── api/
+    │   │   ├── auth/
+    │   │   ├── predict/
+    │   │   ├── profile/
+    │   │   └── ...
+    │   │
+    │   ├── components/
+    │   │   ├── ImageUpload.tsx
+    │   │   └── LogoutButton.tsx
+    │   │
+    │   ├── login/
+    │   ├── profile/
+    │   ├── signup/
+    │   ├── page.tsx
+    │   └── layout.tsx
+    │
+    ├── lib/
+    │   ├── auth.ts
+    │   └── prisma.ts
+    │
+    ├── prisma/
+    │   └── schema.prisma
+    │
+    ├── public/
+    │
+    ├── ml-backend/
+    │   ├── app.py
+    │   ├── train.py
+    │   ├── evaluate.py
+    │   ├── dataset.py
+    │   ├── model.py
+    │   ├── requirements.txt
+    │   │
+    │   └── models/
+    │       └── visiondx_resnet50_best.pth
+    │
+    ├── package.json
+    ├── next.config.ts
+    ├── prisma.config.ts
+    └── README.md
+🚀 Running VisionDX Locally
+1. Clone the repository
+git clone <YOUR_REPOSITORY_URL>
+cd visiondx-new
+🌐 Run the Next.js Frontend
+Install dependencies:
+npm install
+Start the development server:
+npm run dev
+Open:
+http://localhost:3000
+🧠 Run the ML Backend
+Navigate to:
+cd ml-backend
+Create/activate the Python virtual environment.
+Windows
+python -m venv venv
+venv\Scripts\activate
+Install dependencies:
+pip install -r requirements.txt
+Start FastAPI:
+uvicorn app:app --host 127.0.0.1 --port 8001 --reload
+The API will be available at:
+http://127.0.0.1:8001
+Health check:
+http://127.0.0.1:8001/health
+🧪 Train the Model
+Navigate to the ML backend:
+cd ml-backend
+Activate the virtual environment:
+venv\Scripts\activate
+Run:
+python train.py
+The training pipeline:
+Loads the retinal dataset
+Applies image transformations
+Loads ResNet50
+Modifies the classifier for seven classes
+Uses CUDA when available
+Trains the model
+Validates after each epoch
+Saves the best-performing checkpoint
+🖥️ GPU Training
+The model was trained using:
+GPU:
+NVIDIA GeForce RTX 3050 Ti Laptop GPU
+
+CUDA:
+Enabled
+Check CUDA availability:
+import torch
+
+print(torch.cuda.is_available())
+
+if torch.cuda.is_available():
+    print(torch.cuda.get_device_name(0))
+🔄 End-to-End Prediction Flow
+User
+  ↓
+Select retinal image
+  ↓
+Next.js frontend
+  ↓
+FastAPI /predict
+  ↓
+Image validation
+  ↓
+RGB conversion
+  ↓
+Resize 224 × 224
+  ↓
+Normalization
+  ↓
+PyTorch Tensor
+  ↓
+ResNet50 inference
+  ↓
+Softmax probabilities
+  ↓
+Predicted class
+  ↓
+Confidence + probabilities
+  ↓
+Result displayed in frontend
+  ↓
+User saves prediction
+  ↓
+Next.js API
+  ↓
+PostgreSQL
+  ↓
+Prediction history
+☁️ Deployment
+Frontend
+The Next.js application is currently deployed on:
+Vercel
+Live application:
+https://visiondx.vercel.app/
+ML Backend
+The FastAPI/PyTorch backend currently runs locally.
+The reason is that the ResNet50 inference environment requires PyTorch and sufficient compute resources, while GPU-based always-on cloud hosting introduces additional infrastructure and cost requirements.
+The architecture is therefore separated into:
+Production Frontend
+        │
+        │
+        ▼
+     Vercel
+
+ML Backend
+        │
+        ▼
+ FastAPI + PyTorch
+     Local GPU
+The backend can be moved to a suitable cloud GPU/compute service in a future deployment.
+🔮 Future Improvements
+Potential future improvements include:
+Deploy the ML inference backend to cloud infrastructure
+Containerize the ML backend with Docker
+Connect the production frontend directly to the deployed ML API
+Add model monitoring
+Add detailed classification reports
+Add confusion matrix visualization
+Improve class balancing
+Experiment with learning-rate scheduling
+Add early stopping
+Improve model generalization
+Add richer prediction analytics
+Improve profile dashboard
+Add explainable AI / visual attention maps
+Add model versioning
+⚠️ Medical Disclaimer
+VisionDX is an experimental AI-based retinal image classification project developed for educational and research purposes.
+The predictions generated by VisionDX:
+Are not medical diagnoses
+Should not replace professional medical advice
+Should not be used as the sole basis for treatment decisions
+Always consult a qualified healthcare professional for medical diagnosis and treatment.
+📊 Current Project Status
+Component
+Status
+Next.js Frontend
+✅ Complete
+Responsive UI
+✅ Complete
+User Authentication
+✅ Complete
+User Profile
+✅ Complete
+PostgreSQL Integration
+✅ Complete
+Prediction History
+✅ Complete
+Dataset Preparation
+✅ Complete
+ResNet50 Model
+✅ Trained
+Model Evaluation
+✅ Complete
+FastAPI Prediction API
+✅ Complete
+Frontend Prediction UI
+✅ Complete
+Frontend Deployment
+✅ Live
+ML Backend Deployment
+🔄 Pending
+Frontend ↔ Production ML API
+🔄 Pending
+🎯 Vision
+VisionDX demonstrates how deep learning, computer vision, backend APIs, databases, authentication, and modern web technologies can be combined into an end-to-end AI application.
+Artificial Intelligence
+          +
+Computer Vision
+          +
+Deep Learning
+          +
+FastAPI
+          +
+Next.js
+          +
+PostgreSQL
+          +
+Authentication
+          ↓
+       VisionDX
 👨‍💻 Developer
-
 Aarush Rastogi
-
 Computer Science Engineering Student
 Specialization: Artificial Intelligence & Machine Learning
-
-⭐ Support
-
-If you found this project interesting, consider giving the repository a ⭐.
+⭐ If you found VisionDX interesting, consider giving the repository a star.
