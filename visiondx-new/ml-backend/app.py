@@ -145,7 +145,7 @@ model = model.to(device)
 model.eval()
 
 
-print("\n✓ VisionDX model loaded successfully!")
+print("\n[OK] VisionDX model loaded successfully!")
 print("=" * 60)
 
 
