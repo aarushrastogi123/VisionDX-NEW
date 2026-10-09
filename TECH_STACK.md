@@ -14,7 +14,7 @@ graph LR
         Tailwind["TailwindCSS v4"]
         TS["TypeScript 5"]
     end
-
+    
     subgraph "2. Server & Data Tier"
         Jose["jose (JWT Auth)"]
         Bcrypt["bcryptjs"]
