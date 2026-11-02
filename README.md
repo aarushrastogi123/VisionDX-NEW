@@ -366,14 +366,10 @@ VISIONDX-NEW/
     ├── prisma/
     │   └── schema.prisma
     │
-    ├── public/
-    │
     ├── ml-backend/
     │   ├── app.py
     │   ├── train.py
     │   ├── evaluate.py
-    │   ├── dataset.py
-    │   ├── model.py
     │   ├── requirements.txt
     │   │
     │   └── models/
@@ -393,7 +389,7 @@ npm install
 Start the development server:
 npm run dev
 Open:
-http://localhost:3000
+http://localhost:4317
 🧠 Run the ML Backend
 Navigate to:
 cd ml-backend

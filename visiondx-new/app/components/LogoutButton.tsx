@@ -25,11 +25,10 @@ export default function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      aria-label="Sign out"
-      title="Sign out"
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-red-400/30 bg-slate-800 text-xl transition hover:border-red-400 hover:bg-red-500/10 disabled:cursor-not-allowed disabled:opacity-50"
+      aria-busy={loading}
+      className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-[#607574] transition-colors hover:bg-[#f1e9e6] hover:text-[#8a3e2c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#087f79] disabled:cursor-wait disabled:opacity-50"
     >
-      {loading ? "..." : "🚪"}
+      {loading ? "Signing out…" : "Sign out"}
     </button>
   );
 }

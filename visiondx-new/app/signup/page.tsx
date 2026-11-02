@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { Button } from "apple-liquid-glass-ui";
 
 function SignupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const nextUrl = searchParams.get("next") || "/";
 
   const [name, setName] = useState("");
@@ -15,234 +16,104 @@ function SignupContent() {
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
-
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
       const response = await fetch("/api/auth/signup", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          age,
-          gender,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, age, gender }),
       });
 
       const data = await response.json();
-
       if (!response.ok) {
-        setMessage(data.message || "Something went wrong");
+        setMessage(data.message || "Something went wrong. Please try again.");
         setLoading(false);
         return;
       }
 
-      setMessage(
-        "Account created successfully! Redirecting to login..."
-      );
-
-      setTimeout(() => {
-        router.push(
-          `/login?next=${encodeURIComponent(nextUrl)}`
-        );
-      }, 1500);
-
+      router.push(`/login?next=${encodeURIComponent(nextUrl)}`);
     } catch {
-      setMessage("Unable to connect to the server");
+      setMessage("Unable to connect to the server. Check your connection and try again.");
       setLoading(false);
     }
   };
 
+  const inputClass = "vision-glass-input min-h-12 w-full rounded-lg px-4 py-3 text-[#f0fbfc] outline-none transition placeholder:text-white/45 focus:ring-2 focus:ring-cyan-300/20";
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-800 px-6 py-12">
-
-      {/* Background glow */}
-      <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
-      <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl" />
-
-      <div className="relative w-full max-w-md">
-
-        {/* Logo */}
-        <Link
-          href="/"
-          className="mb-8 block text-center text-4xl font-bold tracking-tight text-white"
-        >
-          Vision<span className="text-cyan-300">DX</span>
+    <main className="vision-auth-backdrop flex min-h-screen items-center justify-center px-5 py-10 sm:px-8">
+      <div className="w-full max-w-lg">
+        <Link href="/" aria-label="VisionDX home" className="mb-7 flex items-center justify-center gap-2.5 text-2xl font-semibold tracking-[-0.04em] text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#75e3df]">
+          <Image src="/icon.png" alt="" width={40} height={40} priority className="h-10 w-10 rounded-xl object-cover" />
+          Vision<span className="-ml-2 text-[#75e3df]">DX</span>
         </Link>
 
-        <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl backdrop-blur sm:p-10">
-
+        <div className="gl-glass-elevated rounded-2xl p-6 sm:p-9">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-widest text-cyan-300">
-              Get Started
-            </p>
-
-            <h1 className="mt-3 text-3xl font-bold text-white">
-              Create your account
-            </h1>
-
-            <p className="mt-3 text-sm leading-6 text-slate-400">
-              Create an account to save your retinal analysis history.
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#75e3df]">Create an account</p>
+            <h1 className="mt-3 font-serif text-4xl tracking-[-0.04em] text-[#f1fbfc]">Keep your work together.</h1>
+            <p className="mt-3 text-sm leading-6 text-[#b5cad3]">Save model outputs and review recent analysis history.</p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="mt-8 space-y-5"
-          >
-
-            {/* Name */}
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
-                Full name
-              </label>
-
-              <input
-                type="text"
-                placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="w-full rounded-xl border border-slate-700 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20"
-              />
+              <label htmlFor="signup-name" className="mb-2 block text-sm font-medium text-[#d3e4e9]">Full name</label>
+              <input id="signup-name" type="text" autoComplete="name" placeholder="Your name" value={name} onChange={(event) => setName(event.target.value)} required className={inputClass} />
             </div>
 
-            {/* Email */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
-                Email address
-              </label>
-
-              <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full rounded-xl border border-slate-700 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20"
-              />
+              <label htmlFor="signup-email" className="mb-2 block text-sm font-medium text-[#d3e4e9]">Email address</label>
+              <input id="signup-email" type="email" autoComplete="email" placeholder="you@example.com" value={email} onChange={(event) => setEmail(event.target.value)} required className={inputClass} />
             </div>
 
-            {/* Password */}
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
-                Password
-              </label>
-
-              <input
-                type="password"
-                placeholder="Create a password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="w-full rounded-xl border border-slate-700 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20"
-              />
+              <label htmlFor="signup-password" className="mb-2 block text-sm font-medium text-[#d3e4e9]">Password</label>
+              <input id="signup-password" type="password" autoComplete="new-password" placeholder="At least 6 characters" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} className={inputClass} />
+              <p className="mt-1.5 text-xs text-[#9db3be]">Use at least 6 characters.</p>
             </div>
 
-            {/* Age */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
-                Age
-              </label>
-
-              <input
-                type="number"
-                placeholder="Your age"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                min="1"
-                max="120"
-                required
-                className="w-full rounded-xl border border-slate-700 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20"
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="signup-age" className="mb-2 block text-sm font-medium text-[#d3e4e9]">Age</label>
+                <input id="signup-age" type="number" inputMode="numeric" placeholder="Age" value={age} onChange={(event) => setAge(event.target.value)} min="1" max="120" required className={inputClass} />
+              </div>
+              <div>
+                <label htmlFor="signup-gender" className="mb-2 block text-sm font-medium text-[#d3e4e9]">Gender</label>
+                <select id="signup-gender" value={gender} onChange={(event) => setGender(event.target.value)} required className={inputClass}>
+                  <option value="">Select one</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+              </div>
             </div>
 
-            {/* Gender */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
-                Gender
-              </label>
+            <Button type="submit" variant="primary" size="md" disabled={loading} aria-busy={loading} className="mt-2 w-full">
+              {loading ? "Creating account…" : "Create account"}
+            </Button>
 
-              <select
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                required
-                className="w-full rounded-xl border border-slate-700 bg-black/40 px-4 py-3 text-white outline-none transition focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20"
-              >
-                <option value="">Select gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Prefer not to say">
-                  Prefer not to say
-                </option>
-              </select>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white shadow-lg shadow-blue-950 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading
-                ? "Creating account..."
-                : "Create Account"}
-            </button>
-
-            {message && (
-              <p className="text-center text-sm text-cyan-300">
-                {message}
-              </p>
-            )}
-
+            {message && <p role="alert" aria-live="polite" className="rounded-lg border border-rose-200/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">{message}</p>}
           </form>
 
-          <p className="mt-7 text-center text-sm text-slate-400">
+          <p className="mt-7 text-center text-sm text-[#b5cad3]">
             Already have an account?{" "}
-
-            <Link
-              href={`/login?next=${encodeURIComponent(nextUrl)}`}
-              className="font-semibold text-cyan-300 transition hover:text-cyan-200"
-            >
-              Login
-            </Link>
+            <Link href={`/login?next=${encodeURIComponent(nextUrl)}`} className="font-semibold text-[#75e3df] underline decoration-transparent underline-offset-4 transition hover:decoration-current focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df]">Sign in</Link>
           </p>
-
         </div>
 
-        <Link
-          href="/"
-          className="mt-6 block text-center text-sm text-slate-500 transition hover:text-cyan-300"
-        >
-          ← Back to VisionDX
-        </Link>
-
+        <Link href="/" className="mt-5 block min-h-11 rounded-lg py-3 text-center text-sm text-[#9db3be] transition-colors hover:text-[#75e3df] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df]">← Back to VisionDX</Link>
       </div>
     </main>
   );
 }
 
 export default function SignupPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-black" />
-      }
-    >
-      <SignupContent />
-    </Suspense>
-  );
+  return <Suspense fallback={<main className="vision-auth-backdrop grid min-h-screen place-items-center text-[#b5cad3]" role="status">Loading account form…</main>}><SignupContent /></Suspense>;
 }

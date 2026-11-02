@@ -1,6 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import Image from "next/image";
+import { Button, Card } from "apple-liquid-glass-ui";
+import { useEffect, useRef, useState } from "react";
 
 type PredictionResult = {
   prediction: string;
@@ -10,6 +12,7 @@ type PredictionResult = {
 
 export default function ImageUpload() {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const previousImageUrl = useRef<string | null>(null);
 
   const [selectedFile, setSelectedFile] =
     useState<File | null>(null);
@@ -35,6 +38,14 @@ export default function ImageUpload() {
   const [saveMessage, setSaveMessage] =
     useState("");
 
+  useEffect(() => {
+    return () => {
+      if (previousImageUrl.current) {
+        URL.revokeObjectURL(previousImageUrl.current);
+      }
+    };
+  }, []);
+
   const handleImageChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -49,6 +60,10 @@ export default function ImageUpload() {
     ];
 
     if (!allowedTypes.includes(file.type)) {
+      if (previousImageUrl.current) {
+        URL.revokeObjectURL(previousImageUrl.current);
+        previousImageUrl.current = null;
+      }
       setImageError(
         "Please select a PNG, JPG, or JPEG image."
       );
@@ -64,12 +79,17 @@ export default function ImageUpload() {
     setImageError("");
     setSaveMessage("");
 
+    if (previousImageUrl.current) {
+      URL.revokeObjectURL(previousImageUrl.current);
+    }
+
     setSelectedFile(file);
     setImageName(file.name);
     setPredictionResult(null);
 
     const imageUrl = URL.createObjectURL(file);
 
+    previousImageUrl.current = imageUrl;
     setSelectedImage(imageUrl);
   };
 
@@ -78,6 +98,10 @@ export default function ImageUpload() {
   };
 
   const handleRemoveImage = () => {
+    if (previousImageUrl.current) {
+      URL.revokeObjectURL(previousImageUrl.current);
+      previousImageUrl.current = null;
+    }
     setSelectedFile(null);
     setSelectedImage(null);
     setImageName("");
@@ -245,7 +269,7 @@ export default function ImageUpload() {
   };
 
   return (
-    <div className="mt-12">
+    <div className="mx-auto mt-10 max-w-3xl text-left">
 
       {/* Hidden file input */}
 
@@ -254,33 +278,34 @@ export default function ImageUpload() {
         type="file"
         accept=".png,.jpg,.jpeg,image/png,image/jpeg"
         onChange={handleImageChange}
-        className="hidden"
+        aria-label="Choose a retinal image"
+        className="sr-only"
       />
 
-      <div className="rounded-3xl border-2 border-dashed border-blue-200 bg-blue-50/50 p-12 transition hover:border-blue-400">
+      <Card variant="elevated" padding="md" className="vision-upload-card gl-glass-elevated rounded-2xl">
 
         {!selectedImage ? (
 
           <>
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100 text-3xl">
-              👁️
+            <div className="rounded-xl border border-dashed border-cyan-100/25 bg-white/[0.035] px-5 py-10 text-center shadow-[inset_0_1px_0_rgba(255,255,255,.06)] sm:px-10 sm:py-14">
+              <div aria-hidden="true" className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-cyan-200/20 bg-cyan-300/10 text-[#75e3df]">
+                <svg viewBox="0 0 24 24" fill="none" className="h-7 w-7">
+                  <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M4 15.5v3A1.5 1.5 0 0 0 5.5 20h13a1.5 1.5 0 0 0 1.5-1.5v-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+
+              <h3 className="mt-5 text-lg font-semibold text-[#f1fbfc]">
+                Select an image to begin
+              </h3>
+
+              <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#b5cad3]">
+                Use a retinal fundus image in PNG or JPEG format. Your image is previewed here before analysis.
+              </p>
+
+              <Button type="button" variant="primary" size="md" onClick={handleChooseImage} className="mt-6">
+                Choose image
+              </Button>
             </div>
-
-            <h3 className="mt-6 text-xl font-semibold text-slate-900">
-              Upload retinal image
-            </h3>
-
-            <p className="mt-2 text-sm text-slate-500">
-              PNG, JPG or JPEG
-            </p>
-
-            <button
-              type="button"
-              onClick={handleChooseImage}
-              className="mt-7 rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700"
-            >
-              Choose Image
-            </button>
           </>
 
         ) : (
@@ -289,22 +314,25 @@ export default function ImageUpload() {
 
             {/* Image Preview */}
 
-            <div className="mx-auto max-w-md overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-lg">
+            <div className="relative mx-auto h-[22rem] max-w-md overflow-hidden rounded-xl border border-white/15 bg-[#07131c]/70 shadow-[0_18px_60px_rgba(0,0,0,.28)]">
 
-              <img
+              <Image
                 src={selectedImage}
                 alt="Selected retinal image"
-                className="max-h-80 w-full object-contain"
+                fill
+                sizes="(max-width: 28rem) 100vw, 28rem"
+                unoptimized
+                className="object-contain"
               />
 
             </div>
 
-            <p className="mt-5 font-medium text-slate-900">
+            <p className="mt-5 break-all text-center font-medium text-[#f1fbfc]">
               {imageName}
             </p>
 
-            <p className="mt-2 text-sm text-green-600">
-              Image selected successfully
+            <p role="status" className="mt-2 text-center text-sm text-[#8ce8df]">
+              Image ready for review
             </p>
 
             {/* Image buttons */}
@@ -315,18 +343,18 @@ export default function ImageUpload() {
                 type="button"
                 onClick={handleChooseImage}
                 disabled={isAnalyzing || isSaving}
-                className="rounded-lg border border-blue-300 bg-white px-5 py-3 font-semibold text-blue-600 transition hover:bg-blue-50 disabled:opacity-50"
+                className="gl-glass min-h-11 rounded-lg border border-white/15 px-5 py-2.5 text-sm font-semibold text-[#d3e4e9] transition-colors hover:border-cyan-200/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Change Image
+                Change image
               </button>
 
               <button
                 type="button"
                 onClick={handleRemoveImage}
                 disabled={isAnalyzing || isSaving}
-                className="rounded-lg bg-slate-800 px-5 py-3 font-semibold text-white transition hover:bg-slate-900 disabled:opacity-50"
+                className="min-h-11 rounded-lg px-5 py-2.5 text-sm font-semibold text-[#9db3be] transition-colors hover:bg-white/[0.06] hover:text-[#f1fbfc] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                Remove
+                Remove image
               </button>
 
             </div>
@@ -334,42 +362,42 @@ export default function ImageUpload() {
             {/* Analyze Button */}
 
             {!predictionResult && (
-
-              <button
-                type="button"
-                onClick={handleAnalyzeImage}
-                disabled={isAnalyzing}
-                className="mt-6 rounded-lg bg-blue-600 px-8 py-3 font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {isAnalyzing
-                  ? "Analyzing..."
-                  : "Analyze Image"}
-              </button>
-
+              <div className="mt-6 flex justify-center">
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="md"
+                  onClick={handleAnalyzeImage}
+                  disabled={isAnalyzing}
+                  aria-busy={isAnalyzing}
+                >
+                  {isAnalyzing
+                    ? "Analyzing image…"
+                    : "Analyze image"}
+                </Button>
+              </div>
             )}
 
             {/* AI RESULT */}
 
             {predictionResult && (
 
-              <div className="mt-8 rounded-2xl border border-cyan-200 bg-white p-6 text-left shadow-lg">
+              <div className="gl-glass mt-8 rounded-xl border border-cyan-100/15 p-5 text-left sm:p-7" aria-live="polite">
 
-                <p className="text-sm font-semibold uppercase tracking-wider text-cyan-600">
-                  AI Analysis Result
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#75e3df]">
+                  Model output
                 </p>
 
-                <h3 className="mt-3 text-2xl font-bold text-slate-900">
+                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[#f1fbfc]">
                   {predictionResult.prediction.replaceAll(
                     "_",
                     " "
                   )}
                 </h3>
 
-                <p className="mt-2 text-lg text-slate-600">
-
-                  Confidence:{" "}
-
-                  <span className="font-bold text-green-600">
+                <p className="mt-2 text-sm text-[#b5cad3]">
+                  Model confidence: {" "}
+                  <span className="font-semibold text-[#e4f2f5]">
                     {predictionResult.confidence.toFixed(2)}%
                   </span>
 
@@ -377,10 +405,10 @@ export default function ImageUpload() {
 
                 {/* Meaningful predictions */}
 
-                <div className="mt-6 border-t border-slate-200 pt-5">
+                <div className="mt-6 border-t border-white/10 pt-5">
 
-                  <p className="font-semibold text-slate-800">
-                    Prediction Breakdown
+                  <p className="font-semibold text-[#d3e4e9]">
+                    Class confidence scores
                   </p>
 
                   <div className="mt-4 space-y-3">
@@ -403,23 +431,23 @@ export default function ImageUpload() {
 
                             <div className="flex justify-between text-sm">
 
-                              <span className="text-slate-600">
+                              <span className="text-[#b5cad3]">
                                 {disease.replaceAll(
                                   "_",
                                   " "
                                 )}
                               </span>
 
-                              <span className="font-medium text-slate-900">
+                              <span className="font-medium text-[#e4f2f5]">
                                 {confidence.toFixed(2)}%
                               </span>
 
                             </div>
 
-                            <div className="mt-1 h-2 overflow-hidden rounded-full bg-slate-200">
+                            <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label={`${disease.replaceAll("_", " ")} confidence`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.min(100, Math.max(0, confidence))}>
 
                               <div
-                                className="h-full rounded-full bg-cyan-500 transition-all"
+                                className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-blue-400 transition-[width] duration-300 motion-reduce:transition-none"
                                 style={{
                                   width: `${confidence}%`,
                                 }}
@@ -442,17 +470,17 @@ export default function ImageUpload() {
                   type="button"
                   onClick={handleSavePrediction}
                   disabled={isSaving || !!saveMessage}
-                  className="mt-8 w-full rounded-xl bg-green-600 px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-8 min-h-12 w-full rounded-lg bg-gradient-to-r from-cyan-300 to-blue-400 px-6 py-3 text-sm font-semibold text-[#06121c] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isSaving
                     ? "Saving..."
                     : saveMessage
-                    ? "Prediction Saved ✓"
-                    : "Save Prediction"}
+                    ? "Saved to your history"
+                    : "Save result to history"}
                 </button>
 
                 {saveMessage && (
-                  <p className="mt-4 text-center font-medium text-green-600">
+                  <p role="status" className="mt-4 text-center text-sm font-medium text-[#8ce8df]">
                     {saveMessage}
                   </p>
                 )}
@@ -467,13 +495,13 @@ export default function ImageUpload() {
 
         {imageError && (
 
-          <p className="mt-5 text-sm font-medium text-red-500">
+          <p role="alert" className="mt-5 rounded-lg border border-rose-200/20 bg-rose-400/10 px-4 py-3 text-sm font-medium text-rose-100">
             {imageError}
           </p>
 
         )}
 
-      </div>
+      </Card>
 
     </div>
   );

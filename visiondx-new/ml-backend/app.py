@@ -56,6 +56,8 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3001",
+        "http://localhost:4317",
+        "http://127.0.0.1:4317",
         "https://visiondx.vercel.app",
     ],
     allow_credentials=True,

@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { Button } from "apple-liquid-glass-ui";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -56,84 +58,90 @@ function LoginContent() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-black via-slate-950 to-slate-800 px-6 py-12">
-      <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl" />
-      <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-400/10 blur-3xl" />
-
-      <div className="relative w-full max-w-md">
+    <main className="vision-auth-backdrop flex min-h-screen items-center justify-center px-5 py-12 sm:px-8">
+      <div className="w-full max-w-md">
         <Link
           href="/"
-          className="mb-10 block text-center text-4xl font-bold tracking-tight text-white"
+          aria-label="VisionDX home"
+          className="mb-8 flex items-center justify-center gap-2.5 text-2xl font-semibold tracking-[-0.04em] text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#75e3df]"
         >
-          Vision<span className="text-cyan-300">DX</span>
+          <Image src="/icon.png" alt="" width={40} height={40} priority className="h-10 w-10 rounded-xl object-cover" />
+          Vision<span className="-ml-2 text-[#75e3df]">DX</span>
         </Link>
 
-        <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 shadow-2xl backdrop-blur sm:p-10">
+        <div className="gl-glass-elevated rounded-2xl p-6 sm:p-9">
           <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-widest text-cyan-300">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#75e3df]">
               Welcome back
             </p>
 
-            <h1 className="mt-3 text-3xl font-bold text-white">
-              Login to VisionDX
+            <h1 className="mt-3 font-serif text-4xl tracking-[-0.04em] text-[#f1fbfc]">
+              Sign in to VisionDX
             </h1>
 
-            <p className="mt-3 text-sm leading-6 text-slate-400">
-              Access your profile and retinal prediction history.
+            <p className="mt-3 text-sm leading-6 text-[#b5cad3]">
+              Access your account and saved analysis history.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label htmlFor="login-email" className="mb-2 block text-sm font-medium text-[#d3e4e9]">
                 Email address
               </label>
 
               <input
+                id="login-email"
                 type="email"
                 placeholder="you@example.com"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-xl border border-slate-700 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20"
+                className="vision-glass-input min-h-12 w-full rounded-lg px-4 py-3 outline-none transition placeholder:text-white/45 focus:ring-2 focus:ring-cyan-300/20"
               />
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label htmlFor="login-password" className="mb-2 block text-sm font-medium text-[#d3e4e9]">
                 Password
               </label>
 
               <input
+                id="login-password"
                 type="password"
                 placeholder="Enter your password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full rounded-xl border border-slate-700 bg-black/40 px-4 py-3 text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/20"
+                className="vision-glass-input min-h-12 w-full rounded-lg px-4 py-3 outline-none transition placeholder:text-white/45 focus:ring-2 focus:ring-cyan-300/20"
               />
             </div>
 
-            <button
+            <Button
               type="submit"
+              variant="primary"
+              size="md"
               disabled={loading}
-              className="w-full rounded-xl bg-blue-600 py-3 font-semibold text-white shadow-lg shadow-blue-950 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full"
+              aria-busy={loading}
             >
               {loading ? "Logging in..." : "Login"}
-            </button>
+            </Button>
 
             {message && (
-              <p className="text-center text-sm text-cyan-300">
+              <p role="status" aria-live="polite" className="text-center text-sm text-[#8ce8df]">
                 {message}
               </p>
             )}
           </form>
 
-          <p className="mt-7 text-center text-sm text-slate-400">
+          <p className="mt-7 text-center text-sm text-[#b5cad3]">
             Don&apos;t have an account?{" "}
             <Link
               href={`/signup?next=${encodeURIComponent(nextUrl)}`}
-              className="font-semibold text-cyan-300 transition hover:text-cyan-200"
+              className="font-semibold text-[#75e3df] underline decoration-transparent underline-offset-4 transition hover:decoration-current focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df]"
             >
               Create one
             </Link>
@@ -146,7 +154,7 @@ function LoginContent() {
               ? "/"
               : `/login?next=${encodeURIComponent(nextUrl)}`
           }
-          className="mt-6 block text-center text-sm text-slate-500 transition hover:text-cyan-300"
+          className="mt-6 block min-h-11 rounded-lg py-3 text-center text-sm text-[#9db3be] transition-colors hover:text-[#75e3df] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df]"
         >
           ← Back to VisionDX
         </Link>
@@ -157,7 +165,7 @@ function LoginContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<main className="vision-auth-backdrop grid min-h-screen place-items-center text-[#b5cad3]" role="status">Loading sign-in…</main>}>
       <LoginContent />
     </Suspense>
   );
