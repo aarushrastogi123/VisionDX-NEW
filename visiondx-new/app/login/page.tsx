@@ -75,7 +75,7 @@ function LoginContent() {
               Welcome back
             </p>
 
-            <h1 className="mt-3 font-serif text-4xl tracking-[-0.04em] text-[#f1fbfc]">
+            <h1 className="mt-3 font-serif text-4xl tracking-[-0.04em] text-[#edf8fa]">
               Sign in to VisionDX
             </h1>
 
@@ -131,7 +131,7 @@ function LoginContent() {
             </Button>
 
             {message && (
-              <p role="status" aria-live="polite" className="text-center text-sm text-[#8ce8df]">
+              <p role="status" aria-live="polite" className="text-center text-sm text-[#61cce5]">
                 {message}
               </p>
             )}

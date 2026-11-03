@@ -21,7 +21,7 @@ type User = {
   predictions: Prediction[];
 };
 
-const fieldClass = "vision-glass-input min-h-12 w-full rounded-lg px-4 py-3 text-[#f0fbfc] outline-none transition focus:ring-2 focus:ring-cyan-300/20";
+const fieldClass = "vision-glass-input min-h-12 w-full rounded-lg px-4 py-3 text-[#edf8fa] outline-none transition focus:ring-2 focus:ring-cyan-300/20";
 
 export default function ProfileClient({ user }: { user: User }) {
   const router = useRouter();
@@ -117,7 +117,7 @@ export default function ProfileClient({ user }: { user: User }) {
               </dl>
             )}
 
-            {message && <p role={messageIsError ? "alert" : "status"} aria-live="polite" className={`mt-5 rounded-lg border px-4 py-3 text-sm ${messageIsError ? "border-rose-200/20 bg-rose-400/10 text-rose-100" : "border-emerald-200/20 bg-emerald-300/10 text-emerald-100"}`}>{message}</p>}
+            {message && <p role={messageIsError ? "alert" : "status"} aria-live="polite" className={`mt-5 rounded-lg border px-4 py-3 text-sm ${messageIsError ? "border-rose-200/20 bg-rose-400/10 text-rose-100" : "border-cyan-200/20 bg-cyan-300/10 text-cyan-100"}`}>{message}</p>}
           </section>
 
           <section className="gl-glass-elevated rounded-2xl p-5 sm:p-7" aria-labelledby="history-heading">
@@ -128,17 +128,17 @@ export default function ProfileClient({ user }: { user: User }) {
 
             {user.predictions.length === 0 ? (
               <div className="gl-glass mt-7 rounded-xl border border-dashed border-white/20 p-7 text-center sm:p-9">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="mx-auto h-8 w-8 text-[#528a7d]"><path d="M3 12s3.25-6 9-6 9 6 9 6-3.25 6-9 6-9-6-9-6Z" stroke="currentColor" strokeWidth="1.6"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.6"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="mx-auto h-8 w-8 text-[#61cce5]"><path d="M3 12s3.25-6 9-6 9 6 9 6-3.25 6-9 6-9-6-9-6Z" stroke="currentColor" strokeWidth="1.6"/><circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.6"/></svg>
                 <p className="mt-4 font-medium">No saved results yet</p>
                 <p className="mt-2 text-sm leading-6 text-[#b5cad3]">When you save an analysis, it will appear here.</p>
-                <Link href="/#analysis" className="mt-5 inline-flex min-h-11 items-center rounded-lg bg-gradient-to-r from-cyan-300 to-blue-400 px-5 py-2.5 text-sm font-semibold text-[#06121c] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df]">Start an analysis</Link>
+                <Link href="/#analysis" className="mt-5 inline-flex min-h-11 items-center rounded-lg bg-gradient-to-r from-[#75e3df] to-[#8bf2ed] px-5 py-2.5 text-sm font-semibold text-[#06121c] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df]">Start an analysis</Link>
               </div>
             ) : (
               <ol className="mt-6 space-y-3">
                 {user.predictions.map((prediction) => (
                   <li key={prediction.id} className="gl-glass flex flex-col justify-between gap-4 rounded-xl border border-white/10 p-4 sm:flex-row sm:items-center">
                     <div className="min-w-0"><p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#75e3df]">Model output</p><h3 className="mt-1.5 break-words font-semibold">{prediction.disease.replaceAll("_", " ")}</h3><time className="mt-1.5 block text-sm text-[#9db3be]" dateTime={new Date(prediction.createdAt).toISOString()}>{new Date(prediction.createdAt).toLocaleString()}</time></div>
-                    <div className="shrink-0 sm:text-right"><p className="text-xs text-[#9db3be]">Model confidence</p><p className="mt-1 text-lg font-semibold text-[#8ce8df]">{prediction.confidence.toFixed(2)}%</p></div>
+                    <div className="shrink-0 sm:text-right"><p className="text-xs text-[#9db3be]">Model confidence</p><p className="mt-1 text-lg font-semibold text-[#61cce5]">{prediction.confidence.toFixed(2)}%</p></div>
                   </li>
                 ))}
               </ol>

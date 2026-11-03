@@ -38,7 +38,7 @@ body {
   margin: 0;
   background: var(--background);
   background-image:
-    radial-gradient(ellipse at 15% 0%, rgba(31, 141, 166, 0.14), transparent 34rem),
+    radial-gradient(ellipse at 15% 0%, rgba(42, 195, 207, 0.12), transparent 34rem),
     radial-gradient(ellipse at 92% 18%, rgba(118, 61, 178, 0.11), transparent 31rem);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
@@ -50,7 +50,7 @@ body {
 
 .vision-auth-backdrop {
   background:
-    radial-gradient(ellipse at 14% 18%, rgba(37, 208, 209, 0.2), transparent 38%),
+    radial-gradient(ellipse at 14% 18%, rgba(42, 195, 207, 0.16), transparent 38%),
     radial-gradient(ellipse at 88% 82%, rgba(123, 80, 205, 0.2), transparent 40%),
     radial-gradient(ellipse at 52% 50%, rgba(22, 70, 93, 0.3), transparent 58%),
     var(--background);
@@ -58,26 +58,26 @@ body {
 
 .vision-glass-stage {
   background-image:
-    radial-gradient(circle at 52% 50%, rgba(42, 222, 224, 0.24), transparent 34%),
+    radial-gradient(circle at 52% 50%, rgba(42, 195, 207, 0.2), transparent 34%),
     conic-gradient(from 210deg at 50% 50%, rgba(91, 70, 188, 0.2), rgba(32, 195, 204, 0.18), rgba(14, 40, 58, 0.4), rgba(91, 70, 188, 0.2));
 }
 
 .vision-app-shell {
   background:
-    radial-gradient(ellipse at 78% 8%, rgba(35, 167, 187, 0.1), transparent 38rem),
+    radial-gradient(ellipse at 78% 8%, rgba(42, 195, 207, 0.09), transparent 38rem),
     #06121c;
 }
 
 .vision-hero {
   background-image:
-    radial-gradient(ellipse at 78% 38%, rgba(20, 178, 191, 0.14), transparent 35rem),
+    radial-gradient(ellipse at 78% 38%, rgba(42, 195, 207, 0.14), transparent 35rem),
     radial-gradient(ellipse at 4% 94%, rgba(112, 64, 182, 0.13), transparent 31rem),
-    linear-gradient(180deg, rgba(5, 17, 27, 0.92), rgba(8, 26, 39, 0.96));
+    linear-gradient(180deg, rgba(5, 18, 28, 0.92), rgba(5, 18, 28, 0.98));
 }
 
 .vision-section-glow {
   background-image:
-    radial-gradient(ellipse at 14% 18%, rgba(45, 174, 186, 0.1), transparent 34rem),
+    radial-gradient(ellipse at 14% 18%, rgba(42, 195, 207, 0.07), transparent 34rem),
     radial-gradient(ellipse at 92% 70%, rgba(120, 72, 186, 0.1), transparent 32rem);
 }
 
@@ -110,7 +110,7 @@ body {
 }
 
 .gl-glass-elevated.vision-glass-stage {
-  background-color: rgba(11, 34, 49, 0.48);
+  background-color: rgba(20, 48, 64, 0.48);
 }
 
 .gl-card {
@@ -146,7 +146,7 @@ body {
 .gl-btn-primary {
   background: linear-gradient(125deg, #5be5df 0%, #37c9d1 54%, #4e9ee8 100%);
   box-shadow: 0 8px 28px rgba(37, 197, 207, 0.22), var(--gl-shadow-inner);
-  color: #04151e;
+  color: #06121c;
 }
 
 .gl-btn-primary:hover:not(:disabled) {
@@ -165,9 +165,9 @@ body {
 }
 
 .vision-glass-input {
-  background: rgba(4, 18, 29, 0.48);
-  border: 1px solid rgba(196, 237, 243, 0.2);
-  color: #f0fbfc;
+  background: rgba(5, 18, 28, 0.76);
+  border: 1px solid rgba(42, 195, 207, 0.2);
+  color: #edf8fa;
   -webkit-backdrop-filter: blur(18px) saturate(145%);
   backdrop-filter: blur(18px) saturate(145%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -178,18 +178,18 @@ body {
 }
 
 .vision-glass-input:disabled {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(20, 48, 64, 0.66);
   color: #94aeb8;
 }
 
 .vision-glass-input option {
-  background: #0c202c;
+  background: #0a202c;
   color: #edf8fa;
 }
 
 ::selection {
   background: rgba(84, 222, 216, 0.34);
-  color: #f5ffff;
+  color: #edf8fa;
 }
 
 @media (prefers-reduced-motion: reduce) {

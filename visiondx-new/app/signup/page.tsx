@@ -45,7 +45,7 @@ function SignupContent() {
     }
   };
 
-  const inputClass = "vision-glass-input min-h-12 w-full rounded-lg px-4 py-3 text-[#f0fbfc] outline-none transition placeholder:text-white/45 focus:ring-2 focus:ring-cyan-300/20";
+  const inputClass = "vision-glass-input min-h-12 w-full rounded-lg px-4 py-3 text-[#edf8fa] outline-none transition placeholder:text-white/45 focus:ring-2 focus:ring-cyan-300/20";
 
   return (
     <main className="vision-auth-backdrop flex min-h-screen items-center justify-center px-5 py-10 sm:px-8">
@@ -58,7 +58,7 @@ function SignupContent() {
         <div className="gl-glass-elevated rounded-2xl p-6 sm:p-9">
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#75e3df]">Create an account</p>
-            <h1 className="mt-3 font-serif text-4xl tracking-[-0.04em] text-[#f1fbfc]">Keep your work together.</h1>
+            <h1 className="mt-3 font-serif text-4xl tracking-[-0.04em] text-[#edf8fa]">Keep your work together.</h1>
             <p className="mt-3 text-sm leading-6 text-[#b5cad3]">Save model outputs and review recent analysis history.</p>
           </div>
 

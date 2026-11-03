@@ -294,7 +294,7 @@ export default function ImageUpload() {
                 </svg>
               </div>
 
-              <h3 className="mt-5 text-lg font-semibold text-[#f1fbfc]">
+              <h3 className="mt-5 text-lg font-semibold text-[#edf8fa]">
                 Select an image to begin
               </h3>
 
@@ -314,7 +314,7 @@ export default function ImageUpload() {
 
             {/* Image Preview */}
 
-            <div className="relative mx-auto h-[22rem] max-w-md overflow-hidden rounded-xl border border-white/15 bg-[#07131c]/70 shadow-[0_18px_60px_rgba(0,0,0,.28)]">
+            <div className="relative mx-auto h-[22rem] max-w-md overflow-hidden rounded-xl border border-white/15 bg-[#0a202c]/70 shadow-[0_18px_60px_rgba(0,0,0,.28)]">
 
               <Image
                 src={selectedImage}
@@ -327,11 +327,11 @@ export default function ImageUpload() {
 
             </div>
 
-            <p className="mt-5 break-all text-center font-medium text-[#f1fbfc]">
+            <p className="mt-5 break-all text-center font-medium text-[#edf8fa]">
               {imageName}
             </p>
 
-            <p role="status" className="mt-2 text-center text-sm text-[#8ce8df]">
+            <p role="status" className="mt-2 text-center text-sm text-[#61cce5]">
               Image ready for review
             </p>
 
@@ -352,7 +352,7 @@ export default function ImageUpload() {
                 type="button"
                 onClick={handleRemoveImage}
                 disabled={isAnalyzing || isSaving}
-                className="min-h-11 rounded-lg px-5 py-2.5 text-sm font-semibold text-[#9db3be] transition-colors hover:bg-white/[0.06] hover:text-[#f1fbfc] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df] disabled:cursor-not-allowed disabled:opacity-50"
+                className="min-h-11 rounded-lg px-5 py-2.5 text-sm font-semibold text-[#9db3be] transition-colors hover:bg-white/[0.06] hover:text-[#edf8fa] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Remove image
               </button>
@@ -388,7 +388,7 @@ export default function ImageUpload() {
                   Model output
                 </p>
 
-                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[#f1fbfc]">
+                <h3 className="mt-3 text-2xl font-semibold tracking-tight text-[#edf8fa]">
                   {predictionResult.prediction.replaceAll(
                     "_",
                     " "
@@ -397,7 +397,7 @@ export default function ImageUpload() {
 
                 <p className="mt-2 text-sm text-[#b5cad3]">
                   Model confidence: {" "}
-                  <span className="font-semibold text-[#e4f2f5]">
+                  <span className="font-semibold text-[#edf8fa]">
                     {predictionResult.confidence.toFixed(2)}%
                   </span>
 
@@ -438,7 +438,7 @@ export default function ImageUpload() {
                                 )}
                               </span>
 
-                              <span className="font-medium text-[#e4f2f5]">
+                              <span className="font-medium text-[#edf8fa]">
                                 {confidence.toFixed(2)}%
                               </span>
 
@@ -447,7 +447,7 @@ export default function ImageUpload() {
                             <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label={`${disease.replaceAll("_", " ")} confidence`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.min(100, Math.max(0, confidence))}>
 
                               <div
-                                className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-blue-400 transition-[width] duration-300 motion-reduce:transition-none"
+                                className="h-full rounded-full bg-gradient-to-r from-[#75e3df] to-[#61cce5] transition-[width] duration-300 motion-reduce:transition-none"
                                 style={{
                                   width: `${confidence}%`,
                                 }}
@@ -470,7 +470,7 @@ export default function ImageUpload() {
                   type="button"
                   onClick={handleSavePrediction}
                   disabled={isSaving || !!saveMessage}
-                  className="mt-8 min-h-12 w-full rounded-lg bg-gradient-to-r from-cyan-300 to-blue-400 px-6 py-3 text-sm font-semibold text-[#06121c] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-8 min-h-12 w-full rounded-lg bg-gradient-to-r from-[#75e3df] to-[#8bf2ed] px-6 py-3 text-sm font-semibold text-[#06121c] transition hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#75e3df] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isSaving
                     ? "Saving..."
@@ -480,7 +480,7 @@ export default function ImageUpload() {
                 </button>
 
                 {saveMessage && (
-                  <p role="status" className="mt-4 text-center text-sm font-medium text-[#8ce8df]">
+                  <p role="status" className="mt-4 text-center text-sm font-medium text-[#61cce5]">
                     {saveMessage}
                   </p>
                 )}
