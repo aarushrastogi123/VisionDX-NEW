@@ -299,7 +299,7 @@ export default function ImageUpload() {
               </h3>
 
               <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-[#b5cad3]">
-                Use a retinal fundus image in PNG or JPEG format. Your image is previewed here before analysis.
+                Only upload a retinal fundus image (a photograph of the retina) in PNG or JPEG format. Other images aren’t supported and may produce an incorrect result. Your image is previewed here before analysis.
               </p>
 
               <Button type="button" variant="primary" size="md" onClick={handleChooseImage} className="mt-6">
