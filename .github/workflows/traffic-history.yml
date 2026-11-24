@@ -1,0 +1,74 @@
+name: Save repository traffic history
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  save-traffic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Check traffic token
+        env:
+          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+        run: |
+          if [ -z "$TRAFFIC_TOKEN" ]; then
+            echo "::error::Set a TRAFFIC_TOKEN repository secret with Administration: read-only permission."
+            exit 1
+          fi
+      - name: Download and merge daily clone and view statistics
+        env:
+          GH_TOKEN: ${{ secrets.TRAFFIC_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          repo = os.environ['GITHUB_REPOSITORY']
+          token = os.environ['GH_TOKEN']
+          out = Path('traffic/history.json')
+          data = json.loads(out.read_text()) if out.exists() else {'repository': repo, 'clones': {}, 'views': {}}
+
+          for kind, key in [('clones','clones'), ('views','views')]:
+              url = f'https://api.github.com/repos/{repo}/traffic/{kind}?per=day'
+              req = urllib.request.Request(url, headers={
+                  'Authorization': f'Bearer {token}',
+                  'Accept': 'application/vnd.github+json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+                  'User-Agent': 'visiondx-traffic-history'
+              })
+              with urllib.request.urlopen(req, timeout=30) as resp:
+                  payload = json.load(resp)
+              for entry in payload.get(key, []):
+                  day = entry['timestamp'][:10]
+                  data.setdefault(key, {})[day] = {
+                      'count': entry['count'],
+                      'uniques': entry['uniques']
+                  }
+
+          data['last_collected_utc'] = datetime.now(timezone.utc).isoformat()
+          data['total_recorded_clones'] = sum(v['count'] for v in data['clones'].values())
+          data['total_recorded_views'] = sum(v['count'] for v in data['views'].values())
+          out.parent.mkdir(parents=True, exist_ok=True)
+          out.write_text(json.dumps(data, indent=2, sort_keys=True) + '\n')
+          print(f"Recorded {data['total_recorded_clones']} clones across {len(data['clones'])} days")
+          PY
+      - name: Commit updated history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add traffic/history.json
+          if git diff --cached --quiet; then
+            echo "No traffic changes"
+          else
+            git commit -m "Update historical repository traffic"
+            git push
+          fi
